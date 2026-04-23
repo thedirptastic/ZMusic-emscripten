@@ -47,6 +47,8 @@
 
 FluidConfig fluidConfig;
 
+#ifdef HAVE_FLUIDSYNTH
+
 #include "../thirdparty/fluidsynth/include/fluidsynth.h"
 
 class FluidSynthMIDIDevice : public SoftSynthMIDIDevice
@@ -523,3 +525,12 @@ MIDIDevice *CreateFluidSynthMIDIDevice(int samplerate, const char *Args)
 	Fluid_SetupConfig(Args, fluid_patchset, true);
 	return new FluidSynthMIDIDevice(samplerate, fluid_patchset);
 }
+
+#else
+
+MIDIDevice *CreateFluidSynthMIDIDevice(int samplerate, const char *Args)
+{
+	throw std::runtime_error("FluidSynth device not supported in this configuration");
+}
+
+#endif
