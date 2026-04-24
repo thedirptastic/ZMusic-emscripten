@@ -271,16 +271,17 @@ void FluidSynthMIDIDevice::ComputeOutput(float *buffer, int len)
 int FluidSynthMIDIDevice::LoadPatchSets(const std::vector<std::string> &config)
 {
 	int count = 0;
+	ZMusic_Printf(ZMUSIC_MSG_NOTIFY, "FluidSynth: Loading patch sets...\n");
 	for (auto& file : config)
 	{
 		if (FLUID_FAILED != fluid_synth_sfload(FluidSynth, file.c_str(), count == 0))
 		{
-			ZMusic_Printf(ZMUSIC_MSG_DEBUG, "Loaded patch set %s.\n", file.c_str());
+			ZMusic_Printf(ZMUSIC_MSG_NOTIFY, "FluidSynth: Loaded patch set %s.\n", file.c_str());
 			count++;
 		}
 		else
 		{
-			ZMusic_Printf(ZMUSIC_MSG_ERROR, "Failed to load patch set %s.\n", file.c_str());
+			ZMusic_Printf(ZMUSIC_MSG_ERROR, "FluidSynth: Failed to load patch set %s.\n", file.c_str());
 		}
 	}
 	return count;

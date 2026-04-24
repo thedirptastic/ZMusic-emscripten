@@ -100,13 +100,13 @@ set ( fluidsynth_SOURCES
     bindings/fluid_ladspa.h
 )
 
-if ( WIN32 )
+if ( WIN32 OR EMSCRIPTEN )
     set( fluidsynth_SOURCES
         ${fluidsynth_SOURCES}
         utils/win32_glibstubs.c
         utils/win32_glibstubs.h
     )
-endif ( WIN32 )
+endif ( WIN32 OR EMSCRIPTEN )
 
 set ( public_HEADERS
     ../include/fluidsynth/audio.h
@@ -154,7 +154,7 @@ target_include_directories ( fluidsynth PRIVATE
 )
 
 
-if (NOT WIN32)
+if (NOT WIN32 AND NOT EMSCRIPTEN)
    find_package(PkgConfig REQUIRED)
    pkg_search_module(GLIB REQUIRED glib-2.0)
    target_include_directories ( fluidsynth PUBLIC ${GLIB_INCLUDE_DIRS} )

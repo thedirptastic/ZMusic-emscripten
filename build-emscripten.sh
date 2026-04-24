@@ -17,6 +17,7 @@ if [[ "${CLEAN}" == "1" ]]; then
   rm -rf "${BUILD_DIR}"
 fi
 
+# Override if you want a different cache location.
 : "${EM_CACHE:=/tmp/emscripten-cache}"
 mkdir -p "${EM_CACHE}"
 export EM_CACHE

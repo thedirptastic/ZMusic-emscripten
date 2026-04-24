@@ -18,7 +18,9 @@ project(ZMusic
 )
 
 if(EMSCRIPTEN)
-	option(EMSCRIPTEN_PTHREADS "Enable pthread support for Emscripten builds." ON)
+	add_compile_options("-fexceptions")
+	add_link_options("-fexceptions")
+	option(EMSCRIPTEN_PTHREADS "Enable pthread support for Emscripten builds." OFF)
 	if(EMSCRIPTEN_PTHREADS)
 		add_compile_options("-pthread")
 		add_link_options("-pthread")
@@ -70,7 +72,7 @@ endif()
 
 set(ZMUSIC_ENABLE_FLUIDSYNTH_DEFAULT ON)
 if(EMSCRIPTEN)
-	set(ZMUSIC_ENABLE_FLUIDSYNTH_DEFAULT OFF)
+	set(ZMUSIC_ENABLE_FLUIDSYNTH_DEFAULT ON)
 endif()
 option(ZMUSIC_ENABLE_FLUIDSYNTH "Build with the bundled FluidSynth backend" ${ZMUSIC_ENABLE_FLUIDSYNTH_DEFAULT})
 

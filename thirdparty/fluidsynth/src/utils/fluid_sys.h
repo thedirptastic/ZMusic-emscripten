@@ -168,6 +168,10 @@ typedef gintptr  intptr_t;
 
 #endif
 
+#if defined(__EMSCRIPTEN__) && defined(WITH_GLIB_STUBS)
+#include "win32_glibstubs.h"
+#endif
+
 /* Darwin special defines (taken from config_macosx.h) */
 #ifdef DARWIN
 # define MACINTOSH
@@ -178,7 +182,7 @@ typedef gintptr  intptr_t;
 #include <gmodule.h>
 #endif
 
-#ifndef WIN32
+#if !defined(WIN32) && !defined(__EMSCRIPTEN__)
 #include <glib/gstdio.h>
 #endif
 

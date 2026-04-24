@@ -141,4 +141,51 @@ void fluid_g_thread_join(GThread *thread)
     }
 }
 
+#elif defined(__EMSCRIPTEN__)
+
+#include "fluidsynth_priv.h"
+#include "fluid_sys.h"
+#include "win32_glibstubs.h"
+
+#include <pthread.h>
+#include <sys/stat.h>
+#include <time.h>
+#include <unistd.h>
+#include <errno.h>
+
+BOOL fluid_g_file_test(const char *path, int flags)
+{
+    struct stat st;
+    if (stat(path, &st) != 0) {
+        return FALSE;
+    }
+    if (flags & G_FILE_TEST_EXISTS) {
+        return TRUE;
+    }
+    if (flags & G_FILE_TEST_IS_REGULAR) {
+        return S_ISREG(st.st_mode) ? TRUE : FALSE;
+    }
+    return FALSE;
+}
+
+double fluid_g_get_monotonic_time(void)
+{
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (double)ts.tv_sec * 1000000.0 + (double)ts.tv_nsec / 1000.0;
+}
+
+GThread *fluid_g_thread_create(GThreadFunc func, void *data, BOOL joinable, GError **error)
+{
+    /* Threads are disabled for Emscripten. */
+    return NULL;
+}
+
+void fluid_g_thread_join(GThread *thread)
+{
+    /* No-op */
+}
+
+/* Stub out pthread functions that might be missing in a non-threaded build */
+int pthread_setschedparam(pthread_t thread, int policy, const struct sched_param *param) { return 0; }
 #endif

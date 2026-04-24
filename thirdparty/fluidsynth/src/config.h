@@ -70,7 +70,11 @@
 /* #undef HAVE_NETINET_TCP_H */
 
 /* Define if compiling the mixer with multi-thread support */
+#ifdef __EMSCRIPTEN__
+#define ENABLE_MIXER_THREADS 0
+#else
 #define ENABLE_MIXER_THREADS 1
+#endif
 
 /* Define if compiling with openMP to enable parallel audio rendering */
 /* #undef HAVE_OPENMP */
@@ -122,8 +126,10 @@
 #define HAVE_UNISTD_H 1
 #endif
 
+#if defined(_WIN32) || defined(_WIN64)
 /* Define to 1 if you have the <windows.h> header file. */
 #define HAVE_WINDOWS_H 1
+#endif
 
 /* Define to 1 if you have the <getopt.h> header file. */
 /* #undef HAVE_GETOPT_H */
@@ -273,7 +279,7 @@
 #define HAVE_SOCKLEN_T 1
 
 /* Define if using glib stubs instead of real glib. */
-#ifdef _WIN32
+#if defined(_WIN32) || defined(__EMSCRIPTEN__)
 #define WITH_GLIB_STUBS
 #endif
 
